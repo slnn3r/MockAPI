@@ -4,7 +4,6 @@ const fs = require("fs");
 
 const conditionConfig = require( "./config/conditionConfig" )
 const postConfig = require( "./config/postConfig" )
-const inputConfig = require( "./config/inputConfig" )
 
 const bodyParser = require('body-parser');
 
