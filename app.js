@@ -44,7 +44,7 @@ for(var urlCount in config){
     for(var selectedUrlCount in config){
 
       if(req.route.path==config[selectedUrlCount].url){
-        var times= 1; // define loop time
+        var valueLoop=0; // define loop time
 
         for(var valueInput in config[selectedUrlCount].condition){
 
@@ -60,21 +60,32 @@ for(var urlCount in config){
             }
           }
           //
+          var parseRequestBody =JSON.stringify(req.body);
+          var getVar = parseRequestBody.substring(parseRequestBody.lastIndexOf("{")+2,parseRequestBody.lastIndexOf(":")-1);
 
-          if(config[selectedUrlCount].condition[valueInput].value==getItem){
+          if(config[selectedUrlCount].request==getVar){
 
-            var contents = fs.readFileSync(publicdir+config[selectedUrlCount].condition[valueInput].path);
-            var jsonContent = JSON.parse(contents);
+            if(config[selectedUrlCount].condition[valueInput].value==getItem){
 
-            res.send(jsonContent);
+              var contents = fs.readFileSync(publicdir+config[selectedUrlCount].condition[valueInput].path);
+              var jsonContent = JSON.parse(contents);
+
+              res.send(jsonContent);
+
+            }else{
+
+              valueLoop+=1;
+              if(valueLoop>=valueCount){ // if loop times >= value count == no result found/matched, so break here.
+                return next();
+              }
+            }
 
           }else{
 
-            times+=1;
-            if(times>=valueCount){ // if loop times >= value count == no result found/matched, so break here.
-              return next();
-            }
+            return next();
+
           }
+
 
         }
 

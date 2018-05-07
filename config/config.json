@@ -6,8 +6,12 @@
    }, {
     "value" : "2",
     "path" : "/api/user2.json"
-   }
-  ]
+   }, {
+    "value" : "3",
+    "path" : "/api/user3.json"
+   }],
+   "request" : "userid"
+
  }, {
   "url" : "/plus",
   "condition" : [{
