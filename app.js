@@ -50,8 +50,6 @@ for(var urlCount in config){
 
           var valueCount = Object.keys(config[selectedUrlCount].condition).length; // get how much value count
 
-          console.log(valueCount);
-
           // get the Input Value
           var input = req.body;
           var getItem;
@@ -62,28 +60,37 @@ for(var urlCount in config){
             }
           }
           //
-          var parseRequestBody =JSON.stringify(req.body);
-          var getVar = parseRequestBody.substring(parseRequestBody.lastIndexOf("{")+2,parseRequestBody.lastIndexOf(":")-1);
 
-          if(config[selectedUrlCount].request==getVar){
+          var getKey = Object.keys(req.body);
 
-            if(config[selectedUrlCount].condition[valueInput].value==getItem){
+          var inputCount = Object.keys(req.body).length;
+          var inputGo = 0;
 
-              var contents = fs.readFileSync(publicdir+config[selectedUrlCount].condition[valueInput].path);
-              var jsonContent = JSON.parse(contents);
+          for(var go in getKey){
 
-              res.send(jsonContent);
+            if(config[selectedUrlCount].request==getKey[go].toString()){
 
-            }else{
 
-              valueLoop+=1;
-              if(valueLoop>=valueCount){ // if loop times >= value count == no result found/matched, so break here.
-                return next();
+              if(config[selectedUrlCount].condition[valueInput].value==req.body[getKey[go]]){
+
+                var contents = fs.readFileSync(publicdir+config[selectedUrlCount].condition[valueInput].path);
+                var jsonContent = JSON.parse(contents);
+
+                res.send(jsonContent);
+
+              }else{
+
+                valueLoop+=1;
+                if(valueLoop>=valueCount){ // if loop times >= value count == no result found/matched, so break here.
+                  return next();
+                }
               }
+
             }
 
-          }else{
+          }
 
+          if(inputGo>=inputCount){
             return next();
 
           }

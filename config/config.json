@@ -1,7 +1,7 @@
 [{
   "url" : "/api",
   "condition" : [{
-    "value" : "1",
+    "value" : "18",
     "path" : "/api/user1.json"
    }, {
     "value" : "2",
@@ -10,7 +10,7 @@
     "value" : "3",
     "path" : "/api/user3.json"
    }],
-   "request" : "userid"
+   "request" : "newrateplanid"
 
  }, {
   "url" : "/plus",
@@ -26,13 +26,13 @@
  }, {
   "url" : "/go",
   "condition" : [{
-    "value" : "a",
+    "value" : "18",
     "path" : "/go/a.json"
    }, {
     "value" : "b",
     "path" : "/go/b.json"
    }
   ],
-  "request" : "plusid"
+  "request" : "newrateplanid"
  }
 ]
