@@ -48,7 +48,9 @@ for(var urlCount in config){
 
         for(var valueInput in config[selectedUrlCount].condition){
 
-          var valueCount = Object.keys(config).length; // get how much value count
+          var valueCount = Object.keys(config[selectedUrlCount].condition).length; // get how much value count
+
+          console.log(valueCount);
 
           // get the Input Value
           var input = req.body;

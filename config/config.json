@@ -21,7 +21,8 @@
     "value" : "2",
     "path" : "/plus/plus2.json"
    }
-  ]
+  ],
+  "request" : "plusid"
  }, {
   "url" : "/go",
   "condition" : [{
@@ -31,6 +32,7 @@
     "value" : "b",
     "path" : "/go/b.json"
    }
-  ]
+  ],
+  "request" : "plusid"
  }
 ]
