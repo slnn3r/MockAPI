@@ -2,8 +2,7 @@ const express = require('express');
 const app = express();
 const fs = require("fs");
 
-const conditionConfig = require( "./config/conditionConfig" )
-const postConfig = require( "./config/postConfig" )
+const config = require( "./config/config" )
 
 const bodyParser = require('body-parser');
 
@@ -34,47 +33,73 @@ app.get('*',function (req, res, next) {
       }
   });
 
-  next();
 });
 
 
-app.post(postConfig.URL,function (req, res, next) {
 
+for(var urlCount in config){
 
-  var input = req.body;
+  app.post(config[urlCount].url,function (req, res, next) {
 
-  var getItem;
+    for(var selectedUrlCount in config){
 
-  for(var propName in input) {
-    if(input.hasOwnProperty(propName)) {
-        var propValue = input[propName];
+      if(req.route.path==config[selectedUrlCount].url){
+        var times= 1; // define loop time
 
-        console.log(propValue);
-        getItem=propValue;
+        for(var valueInput in config[selectedUrlCount].condition){
+
+          var valueCount = Object.keys(config).length; // get how much value count
+
+          // get the Input Value
+          var input = req.body;
+          var getItem;
+          for(var propName in input) {
+            if(input.hasOwnProperty(propName)) {
+                var propValue = input[propName];
+                getItem=propValue;
+            }
+          }
+          //
+
+          if(config[selectedUrlCount].condition[valueInput].value==getItem){
+
+            var contents = fs.readFileSync(publicdir+config[selectedUrlCount].condition[valueInput].path);
+            var jsonContent = JSON.parse(contents);
+
+            res.send(jsonContent);
+
+          }else{
+
+            times+=1;
+            if(times>=valueCount){ // if loop times >= value count == no result found/matched, so break here.
+              return next();
+            }
+          }
+
+        }
+
+      }
 
     }
-  }
 
-  //
-  var checkJSONFile = conditionConfig[getItem];
 
-  if(checkJSONFile){
-    var contents = fs.readFileSync(publicdir+conditionConfig[getItem]+".json");
-    var jsonContent = JSON.parse(contents);
-    res.send(jsonContent);
+  });
 
-  }else{
-    res.status(404);
-    res.json({
+
+}
+
+app.use(function (req, res, next) {
+  res.status(404);
+  res.json({
       error: {
-        code: 404  + " - Invalid Input"
+          code: 404 + " - Invalid POST Input"
       }
-    });
-  }
-
-  next();
-
+  });
 });
+
+
+
+
 
 
 module.exports=app;

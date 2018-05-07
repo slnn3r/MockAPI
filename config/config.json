@@ -1,0 +1,32 @@
+[{
+  "url" : "/api",
+  "condition" : [{
+    "value" : "1",
+    "path" : "/api/user1.json"
+   }, {
+    "value" : "2",
+    "path" : "/api/user2.json"
+   }
+  ]
+ }, {
+  "url" : "/plus",
+  "condition" : [{
+    "value" : "122",
+    "path" : "/plus/plus122.json"
+   }, {
+    "value" : "2",
+    "path" : "/plus/plus2.json"
+   }
+  ]
+ }, {
+  "url" : "/go",
+  "condition" : [{
+    "value" : "a",
+    "path" : "/go/a.json"
+   }, {
+    "value" : "b",
+    "path" : "/go/b.json"
+   }
+  ]
+ }
+]
