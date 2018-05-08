@@ -61,6 +61,7 @@ Output
 - configured `value` is `3`
 - configured `path` is `/api/user3.json`
 - raw JSON body is:
+
       {
         "address" : {
          "postcode" : "30100",
