@@ -16,7 +16,6 @@ app.use(bodyParser.json());
 
 var publicdir = __dirname + '/';
 
-// allow to open json file in any directory, only handle GET Request
 app.use(express.static(publicdir,{extensions:['json']}));
 
 app.use(function (req, res, next) {
@@ -44,34 +43,28 @@ for(var urlCount in config){
     for(var selectedUrlCount in config){
 
       if(req.route.path==config[selectedUrlCount].url){
-        var valueLoop=0; // define loop time
+        var valueLoop=0;
 
         for(var valueInput in config[selectedUrlCount].condition){
 
-          var valueCount = Object.keys(config[selectedUrlCount].condition).length; // get how much value count
+          var valueCount = Object.keys(config[selectedUrlCount].condition).length;
 
-          // get the Input Value
-          var input = req.body;
-          var getItem;
-          for(var propName in input) {
-            if(input.hasOwnProperty(propName)) {
-                var propValue = input[propName];
-                getItem=propValue;
-            }
-          }
-          //
 
-          var getKey = Object.keys(req.body);
+          var allKeys = parseKeys([], req.body);
+          var allItems = parseItems([], req.body);
 
-          var inputCount = Object.keys(req.body).length;
+
+
+          var inputCount = Object.keys(allKeys).length;
           var inputGo = 0;
 
-          for(var go in getKey){
-
-            if(config[selectedUrlCount].request==getKey[go].toString()){
+          for(var go in allKeys){
 
 
-              if(config[selectedUrlCount].condition[valueInput].value==req.body[getKey[go]]){
+            if(config[selectedUrlCount].request==allKeys[go]){
+
+
+              if(config[selectedUrlCount].condition[valueInput].value==allItems[go]){
 
                 var contents = fs.readFileSync(publicdir+config[selectedUrlCount].condition[valueInput].path);
                 var jsonContent = JSON.parse(contents);
@@ -81,17 +74,18 @@ for(var urlCount in config){
               }else{
 
                 valueLoop+=1;
-                if(valueLoop>=valueCount){ // if loop times >= value count == no result found/matched, so break here.
+                if(valueLoop>=valueCount){
                   return next();
                 }
               }
 
+            }else{
+              inputGo+=1;
+              if(inputGo>=inputCount){
+                return next();
+
+              }
             }
-
-          }
-
-          if(inputGo>=inputCount){
-            return next();
 
           }
 
@@ -119,7 +113,26 @@ app.use(function (req, res, next) {
 
 
 
+function parseKeys(keys, obj) {
+  return Object.keys(obj).reduce(function (keys, key) {
+    if (typeof obj[key] !== 'object') {
+      return keys.concat(key);
+    }
 
+    return parseKeys(keys, obj[key]);
+  }, keys);
+}
+
+
+function parseItems(keys, obj) {
+  return Object.keys(obj).reduce(function (keys, key) {
+    if (typeof obj[key] !== 'object') {
+      return keys.concat(obj[key]);
+    }
+
+    return parseItems(keys, obj[key]);
+  }, keys);
+}
 
 
 module.exports=app;

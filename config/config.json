@@ -1,13 +1,13 @@
 [{
   "url" : "/api",
   "condition" : [{
-    "value" : "18",
+    "value" : "1",
     "path" : "/api/user1.json"
    }, {
     "value" : "2",
     "path" : "/api/user2.json"
    }, {
-    "value" : "3",
+    "value" : "18",
     "path" : "/api/user3.json"
    }],
    "request" : "newrateplanid"
