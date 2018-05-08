@@ -10,7 +10,7 @@ To launch program, open project root directory with CLI, then type `npm start`.
 1. Allow user to read files from local disk for its content (JSON file, etc) and response it back to the API caller (GET Request).
 2. Allow user to submit data (raw JSON body) together with the POST request to get something back (JSON file, etc).
 3. Allow user to use JSON file to do configuration on how the POST will response.
-4. Allow user to use JSON file to do configuration on how the ERROR will response. (Details)
+4. Allow user to use JSON file to do configuration on how the ERROR will response.
 
 ### 1. GET Request
 
