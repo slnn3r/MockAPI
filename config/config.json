@@ -22,7 +22,7 @@
     "path" : "/plus/plus2.json"
    }
   ],
-  "request" : "plusid"
+  "request" : "plu2sid"
  }, {
   "url" : "/go",
   "condition" : [{

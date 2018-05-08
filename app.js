@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const fs = require("fs");
 
-const config = require( "./config/config" )
+const config = require( "./config/config")
+const errorConfig = require( "./config/404")
+
 
 const bodyParser = require('body-parser');
 
@@ -26,11 +28,7 @@ app.use(function (req, res, next) {
 app.get('*',function (req, res, next) {
 
   res.status(404);
-  res.json({
-      error: {
-          code: 404 + " - NO JSON FILE FOUND"
-      }
-  });
+  res.json(errorConfig);
 
 });
 
@@ -104,11 +102,7 @@ for(var urlCount in config){
 
 app.use(function (req, res, next) {
   res.status(404);
-  res.json({
-      error: {
-          code: 404 + " - Invalid POST Input"
-      }
-  });
+  res.json(errorConfig);
 });
 
 
