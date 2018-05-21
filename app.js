@@ -5,6 +5,7 @@ const fs = require("fs");
 const config = require( "./config/config")
 const errorConfig = require( "./config/404")
 
+const defaultConfig = require("./config/default")
 
 const bodyParser = require('body-parser');
 
@@ -99,6 +100,21 @@ for(var urlCount in config){
 
 
 }
+
+
+app.use(function (req, res, next) {
+
+
+  if(defaultConfig.path){
+    var contents = fs.readFileSync(publicdir+defaultConfig.path);
+    var jsonContent = JSON.parse(contents);
+    res.send(jsonContent);
+
+  }else{
+    next();
+  }
+});
+
 
 app.use(function (req, res, next) {
   res.status(404);
