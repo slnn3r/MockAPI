@@ -45,8 +45,6 @@ for(var urlCount in config){
 
         if(config[selectedUrlCount].condition.length>0 && config[selectedUrlCount].request.length>0){
 
-          console.log("Go in");
-
           for(var valueInput in config[selectedUrlCount].condition){////
 
             var valueCount = Object.keys(config[selectedUrlCount].condition).length;
@@ -97,17 +95,12 @@ for(var urlCount in config){
 
         }else{
 
-          console.log("Go out");
-
           if(config[selectedUrlCount].default){
-
-            console.log("Read Default");
 
             var contents = fs.readFileSync(publicdir+config[selectedUrlCount].default);
             var jsonContent = JSON.parse(contents);
             res.send(jsonContent);
           }else{
-            console.log("Not Default");
             next()
           }
 

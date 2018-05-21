@@ -10,8 +10,8 @@
     "value" : "18",
     "path" : "/api/user3.json"
    }],
-   "request" : "dfgdfg",
-   "default" : "/plus/plus122.json"
+   "request" : "newrateplanid",
+   "default" : "/api/user1.json"
 
  }, {
   "url" : "/plus",
@@ -23,7 +23,8 @@
     "path" : "/plus/plus2.json"
    }
   ],
-  "request" : "plu2sid"
+  "request" : "plu2sid",
+  "default" : "/api/user1.json"
  }, {
   "url" : "/go",
   "condition" : [{
@@ -34,6 +35,7 @@
     "path" : "/go/b.json"
    }
   ],
-  "request" : "newrateplanid"
+  "request" : "newrateplanid",
+  "default" : "/api/user1.json"
  }
 ]
