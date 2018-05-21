@@ -5,8 +5,6 @@ const fs = require("fs");
 const config = require( "./config/config")
 const errorConfig = require( "./config/404")
 
-const defaultConfig = require("./config/default")
-
 const bodyParser = require('body-parser');
 
 const morgan = require('morgan');
@@ -44,52 +42,79 @@ for(var urlCount in config){
       if(req.route.path==config[selectedUrlCount].url){
         var valueLoop=0;
 
-        for(var valueInput in config[selectedUrlCount].condition){
 
-          var valueCount = Object.keys(config[selectedUrlCount].condition).length;
+        if(config[selectedUrlCount].condition.length>0 && config[selectedUrlCount].request.length>0){
 
+          console.log("Go in");
 
-          var allKeys = parseKeys([], req.body);
-          var allItems = parseItems([], req.body);
+          for(var valueInput in config[selectedUrlCount].condition){////
 
-
-
-          var inputCount = Object.keys(allKeys).length;
-          var inputGo = 0;
-
-          for(var go in allKeys){
+            var valueCount = Object.keys(config[selectedUrlCount].condition).length;
 
 
-            if(config[selectedUrlCount].request==allKeys[go]){
+            var allKeys = parseKeys([], req.body);
+            var allItems = parseItems([], req.body);
 
 
-              if(config[selectedUrlCount].condition[valueInput].value==allItems[go]){
 
-                var contents = fs.readFileSync(publicdir+config[selectedUrlCount].condition[valueInput].path);
-                var jsonContent = JSON.parse(contents);
+            var inputCount = Object.keys(allKeys).length;
+            var inputGo = 0;
 
-                res.send(jsonContent);
+            for(var go in allKeys){
+
+
+              if(config[selectedUrlCount].request==allKeys[go]){
+
+
+                if(config[selectedUrlCount].condition[valueInput].value==allItems[go]){
+
+                  var contents = fs.readFileSync(publicdir+config[selectedUrlCount].condition[valueInput].path);
+                  var jsonContent = JSON.parse(contents);
+
+                  res.send(jsonContent);
+
+                }else{
+
+                  valueLoop+=1;
+                  if(valueLoop>=valueCount){
+                    return next();
+                  }
+                }
 
               }else{
-
-                valueLoop+=1;
-                if(valueLoop>=valueCount){
+                inputGo+=1;
+                if(inputGo>=inputCount){
                   return next();
+
                 }
               }
 
-            }else{
-              inputGo+=1;
-              if(inputGo>=inputCount){
-                return next();
-
-              }
             }
 
+
+          }////
+
+
+        }else{
+
+          console.log("Go out");
+
+          if(config[selectedUrlCount].default){
+
+            console.log("Read Default");
+
+            var contents = fs.readFileSync(publicdir+config[selectedUrlCount].default);
+            var jsonContent = JSON.parse(contents);
+            res.send(jsonContent);
+          }else{
+            console.log("Not Default");
+            next()
           }
 
-
         }
+
+
+
 
       }
 
@@ -101,19 +126,6 @@ for(var urlCount in config){
 
 }
 
-
-app.use(function (req, res, next) {
-
-
-  if(defaultConfig.path){
-    var contents = fs.readFileSync(publicdir+defaultConfig.path);
-    var jsonContent = JSON.parse(contents);
-    res.send(jsonContent);
-
-  }else{
-    next();
-  }
-});
 
 
 app.use(function (req, res, next) {
